@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "./app/store";
-import { addProduct } from "./features/inventory/inventorySlice";
+import { addProduct, removeProduct } from "./features/inventory/inventorySlice";
 import { useState } from "react";
 
 function App() {
@@ -8,7 +8,7 @@ function App() {
   const dispatch = useDispatch();
   const [productName, setProductName] = useState("");
   const [quantity, setQuantity] = useState("");
-  const [price, setPrice]= useState("");
+  const [price, setPrice] = useState("");
 
   const handleAddProduct = () => {
     if (!productName.trim()) {
@@ -26,7 +26,13 @@ function App() {
       <h1>STOCKFLOW</h1>
       <ul>
         {inventory.map((product, index) => (
-          <li key={index}>{product.name} - Quantity: {product.quantity} - Price: {product.price}</li>
+          <li key={index}>{product.name} -
+            Quantity: {product.quantity} -
+            Price: {product.price}
+            <button onClick={() => dispatch(removeProduct(product.name))}>
+              Remove
+            </button>
+          </li>
         ))}
       </ul>
       <input
@@ -35,9 +41,9 @@ function App() {
         onChange={(event) => setProductName(event.target.value)}
       />
       ||
-      <input type="number" value={quantity} onChange={(event)=>setQuantity(event.target.value)} />
+      <input type="number" value={quantity} onChange={(event) => setQuantity(event.target.value)} />
       ||
-      <input type="number" value={price} onChange={(event)=>setPrice(event.target.value)}  />
+      <input type="number" value={price} onChange={(event) => setPrice(event.target.value)} />
       ||
       <button onClick={handleAddProduct}>Add Product</button>
     </>

@@ -1,4 +1,4 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 type Product = {
   name: string;
@@ -13,9 +13,14 @@ const inventorySlice = createSlice({
     addProduct: (state, action: PayloadAction<Product>) => {
       state.push(action.payload);
     },
+    removeProduct: (state, action: PayloadAction<string>) => {
+      return state.filter(
+        (product) => product.name !== action.payload
+      );
+    },
   },
 });
 
-export const { addProduct } = inventorySlice.actions;
+export const { addProduct, removeProduct } = inventorySlice.actions;
 
 export default inventorySlice.reducer;
