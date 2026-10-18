@@ -1,14 +1,28 @@
-import { createSlice, type PayloadAction  } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
+import { getProducts } from "../../services/productService.ts"
 
 type Product = {
+  id: string;
   name: string;
   quantity: number;
   price: number;
 };
 
+export const fetchProducts = createAsyncThunk(
+  "inventory/fetchProducts",
+  async () => {
+    const data = await getProducts();
+
+    return data.products
+  }
+
+)
+
 const inventorySlice = createSlice({
   name: "inventory",
   initialState: [] as Product[],
+  loading: false,
+  error: null as string | null,
   reducers: {
     addProduct: (state, action: PayloadAction<Product>) => {
       state.push(action.payload);
@@ -18,6 +32,20 @@ const inventorySlice = createSlice({
         (product) => product.name !== action.payload
       );
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchProducts.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(fetchProducts.fulfilled, (state, action) => {
+      state.loading = false;
+      state.products = action.payload;
+    });
+    builder.addCase(fetchProducts.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message ?? "Failed to fetch products";
+    });
   },
 });
 

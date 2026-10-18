@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "./app/store";
-import { addProduct, removeProduct } from "./features/inventory/inventorySlice";
-import { useState } from "react";
+import { fetchProducts, addProduct, removeProduct } from "./features/inventory/inventorySlice";
+import { useEffect, useState } from "react";
 
 function App() {
   const inventory = useSelector((state: RootState) => state.inventory);
@@ -10,12 +10,20 @@ function App() {
   const [quantity, setQuantity] = useState("");
   const [price, setPrice] = useState("");
 
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch])
+
   const handleAddProduct = () => {
     if (!productName.trim()) {
       return;
     }
 
-    dispatch(addProduct({ name: productName.trim(), quantity: Number(quantity), price: Number(price) }));
+    dispatch(addProduct({
+      name: productName.trim(),
+      quantity: Number(quantity),
+      price: Number(price)
+    }));
     setProductName("");
     setQuantity("");
     setPrice("")
@@ -41,9 +49,11 @@ function App() {
         onChange={(event) => setProductName(event.target.value)}
       />
       ||
-      <input type="number" value={quantity} onChange={(event) => setQuantity(event.target.value)} />
+      <input type="number" value={quantity} onChange={(event) =>
+        setQuantity(event.target.value)} />
       ||
-      <input type="number" value={price} onChange={(event) => setPrice(event.target.value)} />
+      <input type="number" value={price} onChange={(event) =>
+        setPrice(event.target.value)} />
       ||
       <button onClick={handleAddProduct}>Add Product</button>
     </>
