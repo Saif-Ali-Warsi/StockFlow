@@ -13,7 +13,7 @@ function App() {
       return;
     }
 
-    dispatch(addProduct(productName.trim()));
+    dispatch(addProduct({ name: productName.trim(), quantity: 0, price: 0 }));
     setProductName("");
   };
 
@@ -22,7 +22,7 @@ function App() {
       <h1>STOCKFLOW</h1>
       <ul>
         {inventory.map((product, index) => (
-          <li key={index}>{product}</li>
+          <li key={index}>{product.name}</li>
         ))}
       </ul>
       <input
