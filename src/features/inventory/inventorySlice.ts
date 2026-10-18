@@ -10,7 +10,7 @@ const inventorySlice = createSlice({
   name: "inventory",
   initialState: [] as Product[],
   reducers: {
-    addProduct: (state, action) => {
+    addProduct: (state, action: PayloadAction<Product>) => {
       state.push(action.payload);
     },
   },

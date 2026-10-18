@@ -22,7 +22,7 @@ function App() {
       <h1>STOCKFLOW</h1>
       <ul>
         {inventory.map((product, index) => (
-          <li key={index}>{product.name}</li>
+          <li key={index}>{product.name} - Quantity: {product.quantity} - Price: {product.price}</li>
         ))}
       </ul>
       <input
