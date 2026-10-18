@@ -7,14 +7,18 @@ function App() {
   const inventory = useSelector((state: RootState) => state.inventory);
   const dispatch = useDispatch();
   const [productName, setProductName] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [price, setPrice]= useState("");
 
   const handleAddProduct = () => {
     if (!productName.trim()) {
       return;
     }
 
-    dispatch(addProduct({ name: productName.trim(), quantity: 0, price: 0 }));
+    dispatch(addProduct({ name: productName.trim(), quantity: Number(quantity), price: Number(price) }));
     setProductName("");
+    setQuantity("");
+    setPrice("")
   };
 
   return (
@@ -30,6 +34,10 @@ function App() {
         value={productName}
         onChange={(event) => setProductName(event.target.value)}
       />
+      ||
+      <input type="number" value={quantity} onChange={(event)=>setQuantity(event.target.value)} />
+      ||
+      <input type="number" value={price} onChange={(event)=>setPrice(event.target.value)}  />
       ||
       <button onClick={handleAddProduct}>Add Product</button>
     </>
