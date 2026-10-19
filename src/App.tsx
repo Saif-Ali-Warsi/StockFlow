@@ -34,7 +34,7 @@ function App() {
       <h1>STOCKFLOW</h1>
       <ul>
         {inventory.map((product, index) => (
-          <li key={index}>{product.name} -
+          <li key={index}>{product.title} -
             Quantity: {product.quantity} -
             Price: {product.price}
             <button onClick={() => dispatch(removeProduct(product.name))}>

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
-import { getProducts } from "../../services/productService.ts"
+import { getProducts } from "../../services/productService.ts";
 
 type Product = {
   id: string;
@@ -20,9 +20,11 @@ export const fetchProducts = createAsyncThunk(
 
 const inventorySlice = createSlice({
   name: "inventory",
-  initialState: [] as Product[],
-  loading: false,
-  error: null as string | null,
+  initialState: {
+    products: [] as Product[],
+    loading: false,
+    error: null as string | null
+  },
   reducers: {
     addProduct: (state, action: PayloadAction<Product>) => {
       state.push(action.payload);
