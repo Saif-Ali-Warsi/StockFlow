@@ -1,10 +1,14 @@
-import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createAsyncThunk,
+  type PayloadAction,
+} from "@reduxjs/toolkit";
 import { getProducts } from "../../services/productService.ts";
 
 type Product = {
-  id: string;
-  name: string;
-  quantity: number;
+  id: number;
+  title: string;
+  stock: number;
   price: number;
 };
 
@@ -13,25 +17,24 @@ export const fetchProducts = createAsyncThunk(
   async () => {
     const data = await getProducts();
 
-    return data.products
-  }
-
-)
+    return data.products;
+  },
+);
 
 const inventorySlice = createSlice({
   name: "inventory",
   initialState: {
     products: [] as Product[],
     loading: false,
-    error: null as string | null
+    error: null as string | null,
   },
   reducers: {
     addProduct: (state, action: PayloadAction<Product>) => {
-      state.push(action.payload);
+      state.products.push(action.payload);
     },
-    removeProduct: (state, action: PayloadAction<string>) => {
-      return state.filter(
-        (product) => product.name !== action.payload
+    removeProduct: (state, action: PayloadAction<number>) => {
+      state.products = state.products.filter(
+        (item) => item.id !== action.payload,
       );
     },
   },
