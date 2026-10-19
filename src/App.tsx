@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import type { RootState, AppDispatch } from "./app/store";
+import { RootState, AppDispatch } from "./app/store";
 import {
   fetchProducts,
   addProduct,
@@ -9,6 +9,8 @@ import { useEffect, useState } from "react";
 
 function App() {
   const inventory = useSelector((state: RootState) => state.inventory.products);
+  const loading = useSelector((state: RootState) => state.inventory.loading);
+  const error = useSelector((state: RootState) => state.inventory.error);
   const dispatch = useDispatch<AppDispatch>();
   const [productName, setProductName] = useState("");
   const [quantity, setQuantity] = useState("");
@@ -38,7 +40,8 @@ function App() {
 
   return (
     <>
-      <h1>STOCKFLOW</h1>
+      {loading && <p>Loading products..</p>}
+      {error && <p>Error: {error}</p>}
       <ul>
         {inventory.map((product, index) => (
           <li key={index}>
