@@ -4,6 +4,7 @@ import {
   fetchProducts,
   addProduct,
   removeProduct,
+  updateProduct,
   type Product,
 } from "./features/inventory/inventorySlice";
 import { useEffect, useState } from "react";
@@ -27,17 +28,27 @@ function App() {
       return;
     }
 
-    dispatch(
-      addProduct({
-        id: Date.now(),
-        title: productName.trim(),
-        stock: Number(quantity),
-        price: Number(price),
-      }),
-    );
-    setProductName("");
-    setQuantity("");
-    setPrice("");
+    if (editingProductId !== null) {
+      dispatch(
+        updateProduct({
+          id: editingProductId,
+          title: productName.trim(),
+          stock: Number(quantity),
+          price: Number(price),
+        }),
+      );
+
+      setEditingProductId(null);
+    } else {
+      dispatch(
+        addProduct({
+          id: Date.now(),
+          title: productName.trim(),
+          stock: Number(quantity),
+          price: Number(price),
+        }),
+      );
+    }
   };
 
   const handleEditProduct = (product: Product) => {
@@ -53,7 +64,7 @@ function App() {
         {/* Header Title */}
         <div>
           <h1 className="text-3xl font-extrabold text-[#61677C] drop-shadow-[1px_1px_1px_#FFFFFF]">
-           Redux Inventory Management
+            Redux Inventory Management
           </h1>
           <p className="text-sm text-[#A0A5B5] mt-1 drop-shadow-[1px_1px_1px_#FFFFFF]">
             Add, edit, and track your store inventory seamlessly.
@@ -133,8 +144,10 @@ function App() {
                 onClick={handleAddProduct}
                 className="cursor-pointer w-full bg-[#EBECF0] text-[#61677C] font-bold py-3.5 px-4 rounded-2xl text-sm shadow-[-5px_-5px_15px_#FFFFFF,5px_5px_15px_#BABECC] hover:shadow-[-2px_-2px_5px_#FFFFFF,2px_2px_5px_#BABECC] active:shadow-[inset_1px_1px_2px_#BABECC,inset_-1px_-1px_2px_#FFFFFF] transition-all flex items-center justify-center"
               >
-                Add Product
+                  {editingProductId !== null ? "Save Changes" : "Add Product"}
               </button>
+
+
             </div>
 
             {/* Inventory List Section */}
