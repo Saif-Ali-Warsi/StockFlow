@@ -4,7 +4,7 @@ import { fetchProducts, addProduct, removeProduct } from "./features/inventory/i
 import { useEffect, useState } from "react";
 
 function App() {
-  const inventory = useSelector((state: RootState) => state.inventory);
+  const inventory = useSelector((state: RootState) => state.inventory.products);
   const dispatch = useDispatch();
   const [productName, setProductName] = useState("");
   const [quantity, setQuantity] = useState("");
