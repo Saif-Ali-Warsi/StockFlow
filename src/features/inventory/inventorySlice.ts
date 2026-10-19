@@ -5,7 +5,7 @@ import {
 } from "@reduxjs/toolkit";
 import { getProducts } from "../../services/productService.ts";
 
-type Product = {
+export type Product = {
   id: number;
   title: string;
   stock: number;
@@ -37,6 +37,15 @@ const inventorySlice = createSlice({
         (item) => item.id !== action.payload,
       );
     },
+    updateProduct: (state, action: PayloadAction<Product>) => {
+      const index = state.products.findIndex(
+        (item) => item.id === action.payload.id,
+      );
+
+      if (index !== -1) {
+        state.products[index] = action.payload;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchProducts.pending, (state) => {
@@ -54,6 +63,6 @@ const inventorySlice = createSlice({
   },
 });
 
-export const { addProduct, removeProduct } = inventorySlice.actions;
+export const { addProduct, removeProduct, updateProduct } = inventorySlice.actions;
 
 export default inventorySlice.reducer;
